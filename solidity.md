@@ -20,4 +20,14 @@
 
 11. On receiving funds from selfdestruct / coinbase miner reward, the contract can not react to it, and it doesn't require a contract to have receive or fallback functions. - X
 
-12. extcodesize(evm checks the size of the code ) > 0 check is skipped by the complier if the function call expects return data. the ABI decoder will catch the case of a non-existing contract Because such calls are followed up by abi decoding the return data, which has a check returndatasize(evm opcode checks the size return data) is being at least non-zero number. So for empty contracts, they would always revert in the end. - X 
+12. extcodesize(evm opcode checks the size of the code ) > 0 check is skipped by the complier if the function call expects return data. the ABI decoder will catch the case of a non-existing contract Because such calls are followed up by abi decoding the return data, which has a check returndatasize(evm opcode checks the size of return data) is being at least non-zero number. So for empty contracts, they would always revert in the end. - X 
+
+13. Always send 1 wei to precompiled contracts to activate them when testing in private blockchains, otherwise it may lead to OOG (out of gas) 
+
+    precompiled contracts
+        Ex: 
+            SHA-256: 0x2
+            RIPEMD-160: 0x3
+            ECRECOVER: 0x1b
+            ECADD: 0x20 
+

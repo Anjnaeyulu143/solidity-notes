@@ -1,6 +1,3 @@
 1. Sending ether to a contract B from a contract A(for e.g using send or transfer), executes the code of B's fallback function if it exists(and receive doesn't exist) - X
 
 2. Division result is auto rounded towards zero - X
-
-
-

@@ -32,3 +32,17 @@
             ECADD: 0x20 
 
 14. Functions called from within an unchecked block do not inherit the property. Bitwise do not perform the overflow or underflow checks. - X
+
+15. Calling a function on a different contract (instance) will perform an EVM function call and thus switch the context such that state variables in the calling contract are inaccessible during that call (except if you use delegatecall). - X
+
+16. After contract creation, The deployed code does not include the constructor code or internal functions only called from the constructor. - X
+
+17. Dont use this.f inside constructor. - X
+
+18. Internal is the default visibility level for state variables. - X
+
+19. Internal function calls do not create an EVM message call. They are called using simple jump statements. Same for functions of inherited contracts. - X
+
+20. If you have a public state variable of array type, then you can only retrieve single elements of the array via the generated getter function. - X
+
+

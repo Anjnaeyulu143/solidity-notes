@@ -14,4 +14,4 @@ Liquidity providers can be anyone who is able to supply equal values of ETH and 
 --------------------------------------------------------------------------------------------------
 
 The main smart contracts in their repository are these:
-    . UniswapV2ERC20 — an extended ERC20 implementation that’s used for LP-tokens. It additionally implements EIP-2612 to support off-chain approval of transfers.
+    UniswapV2ERC20 — an extended ERC20 implementation that’s used for LP-tokens. It additionally implements EIP-2612 to support off-chain approval of transfers.

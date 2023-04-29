@@ -45,4 +45,6 @@
 
 20. If you have a public state variable of array type, then you can only retrieve single elements of the array via the generated getter function. - X
 
+21. Without a payable keyword in function declaration, it will auto reject all ether sent to it. It will revert. - X
+
 

@@ -1,18 +1,112 @@
 UniswapV2 Protocol
 ---------------------
 
-Uniswap is a decentralised exchange protocol. This protocol is a suite of persistent, non-upgradable smart contracts that together create an automated market maker.
+1. How addLiquidity works ?
+2. How addLiquidityETH works ?
+3. How removeLiquidity works ?
+4. How removeLiquidityETH works ?
+5. How swapping works ?
 
-The Uniswap ecosystem consists of liquidity providers who contribute to liquidity, traders who swap the tokens and developers who interact with smart contracts to develop new interactions for the tokens.
+1. Add Liquidity.
+    -> it calls internal(FUN) 
+    - _addLiquidity().
+        1. First it checks pair contract of these tokens exists or not.If not then it creates a pair contract using these two tokens.
+        2. If these tokens pair contract is exists, then it tries to add liquidity to pool;
 
-Each Uniswap smart contract, or pair, manages a liquidity pool made up of reserves of two ERC-20 tokens.
+            - it calls uniswapLibrary getReserves(FUN);
+                getReserves();
 
-Every liquidity pool rebalances to maintain a 50/50 proportion of cryptocurrency assets, which in turn determines the price of the assets.
+                -1. It calls the sortTokens(FUN)
+                    sortTokens() -> to sort tokenAddresses;
+                -2. It calls the pairFor(FUN)
+                    pairFor() -> It returns the pair address;
+                -3. It calls uniswapV2pair getReserves(FUN);
+                    getReserves() -> it returns the reserved balance of both tokens 
 
-Liquidity providers can be anyone who is able to supply equal values of ETH and an ERC-20 token to a Uniswap exchange contract. In return they are given Liquidity Provider Tokens (LP tokens represent the share of the pool owned by a liquidity provider) from the exchange contract which can be used to withdraw their proportion of the liquidity pool at any time.
+            - Finally uniswapLibrary getReserves(FUN) -> returns balances of the both tokens;
 
---------------------------------------------------------------------------------------------------
+            - It validate the return value, If both tokens balance is 0;
+                - Then user desired amount of the both tokens are add to the liquidity pool;
 
-The main smart contracts in their repository are these:
+            - If return value (balances) is not equal 0;
+                 Then it calculates the optimal value of the both tokens to added to the liquidity
+                 -1. It calls the uniswapLibrary quote(FUN) - to calculate optimal value;
 
-    UniswapV2ERC20 — an extended ERC20 implementation that’s used for LP-tokens. It additionally implements EIP-2612 to support off-chain approval of transfers.
+    - Finally this function is returns the the optimal value added to liquidity of the both tokens;
+
+    - Again it calls the uniswapV2Library pairFor(FUN);
+        - pairFor();
+            - It calls the sortTokens(FUN);
+                sortTokens() -> It sorts the tokens and returns the sorted tokens
+
+    - Based on the sort tokes it returns the contract pair address;
+
+    - Here both tokens amount are transfer to the pair contract.
+
+
+    It calls the mint(FUN);
+        - getReserves();
+
+        it calls the internal _mintFee();
+
+            -This function is executed when the first user added some liquidity and the second user added more liquidity then the first user; 
+
+            if (_kLast != 0) {
+                uint rootK = Math.sqrt(uint(_reserve0).mul(_reserve1));
+                uint rootKLast = Math.sqrt(_kLast);
+                if (rootK > rootKLast) {
+                    uint numerator = totalSupply.mul(rootK.sub(rootKLast));
+                    uint denominator = rootK.mul(5).add(rootKLast);
+                    uint liquidity = numerator / denominator;
+                    if (liquidity > 0) _mint(feeTo, liquidity);
+                }
+            }
+
+        -_mintFee(); -> It returns the bool value. If the user adding liquidity first time then it mint tokens inside the mintFee function
+
+        
+
+
+
+
+
+        ---------------------------------------------
+
+        doge/shiba
+
+        First User            Second User
+
+        100 - doge            150 - doge 
+        100 - shiba           150 - shiba
+
+        _kLast = 10000
+
+
+        amount shiba = (150 * 100)/100 = 150 
+
+        if 150 <= 150:
+            require(150 >= 150);
+            (doge,shiba) = (150,150)
+
+
+        balance of pair contract in doge coin = 250 
+        balance of pair contract in shiba coin = 250
+
+        reserve of doge coin = 100
+        reserve of shiba coin = 100
+
+        amount0 = 250-100 = 150
+        amount1 = 250-100 = 150
+
+        rootK = 100
+        rootKLast = 100
+
+        
+        
+        
+        
+        
+
+
+
+
